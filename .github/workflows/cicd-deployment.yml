@@ -47,7 +47,7 @@ jobs:
             - name: Create an application version
               run: |
                 aws elasticbeanstalk create-application-version \
-                --application-name xashy-webapp \
+                --application-name xashy-webapps \
                 --source-bundle S3Bucket="xashy-web-app-artifactory",S3Key="xashy-webapp.war" \
                 --version-label "ver-${{ github.sha }}" \  
                 --description "commit-sha-${{ github.sha }}"
