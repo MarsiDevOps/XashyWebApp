@@ -1,0 +1,36 @@
+name: CICD-Deployment-with-Elastic-Beanstalk
+
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+    Build-Deploy:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+
+        steps:
+            - name: Clone repository into server
+              uses: actions/checkout@v3
+              
+            - name: Set up Java & Maven
+              uses: actions/setup-java@v2
+              with:
+                java-version: '11'
+                distribution: 'adopt'
+
+            - name: Sonarqube analysis
+              run: mvn sonar:sonar -Dsonar.projectKey=${{secrets.SONAR_PROJECT_KEY}} -Dsonar.host.url=${{secrets.SONAR_HOST_URL}} -Dsonar.login=${{secrets.SONAR_LOGIN}}
+
+            - name: Build WAR package
+              run: mvn clean package 
+            
+            - name: Upload package into artifact repository
+              run: mvn --batch-mode deploy
+              env:
+                GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+            
