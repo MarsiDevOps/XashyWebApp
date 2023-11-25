@@ -44,4 +44,15 @@ jobs:
             - name: Upload artifact into an s3 bucket
               run: aws s3 cp target/*war s3://xashy-web-app-artifactory
 
+            - name: Create an application version
+              run: |
+                aws elasticbeanstalk create-application-version \
+                --application-name xashy-webapp \
+                --source-bundle S3Bucket="xashy-web-app-artifactory",S3Key="xashy-webapp.war" \
+                --version-label "ver-${{ github.sha }}" \  
+                --description "commit-sha-${{ github.sha }}"
+
+            - name: Deploy app to elastic beanstalk environment
+              run: aws elasticbeanstalk update-environment --environment-name Xashy-webapps-env --version-label "ver-${{ github.sha }}" --version-label "ver-${{ github.sha }}"
+
             
