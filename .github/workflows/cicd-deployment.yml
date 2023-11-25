@@ -49,7 +49,7 @@ jobs:
                 aws elasticbeanstalk create-application-version \
                 --application-name xashy-webapps \
                 --source-bundle S3Bucket="xashy-web-app-artifactory",S3Key="xashy-webapp.war" \
-                --version-label "ver-${{ github.sha }}" \  
+                --version-label "ver-${{ github.sha }}" \
                 --description "commit-sha-${{ github.sha }}"
 
             - name: Deploy app to elastic beanstalk environment
