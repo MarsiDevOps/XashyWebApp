@@ -1,4 +1,4 @@
-name: CICD Deployment with Elastic Beanstalk
+name: CICD-Deployment-with-Elastic-Beanstalk
 
 on:
     push:
